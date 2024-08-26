@@ -2,6 +2,7 @@
 matterbridge.toml
 # Ignore environment variables file
 .env
+.env.save
 # Ignore log files
 *.log
 # Ignore binary files

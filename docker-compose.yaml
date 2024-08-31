@@ -1,11 +1,22 @@
-version: '3.7'
+version: '3.7'  # Version de la syntaxe Docker Compose utilisée
+
 services:
-  matterbridge:
-    build: .
-    restart: unless-stopped
+  matterbridge:  # Définition du service nommé "matterbridge"
+    build: .  # Construit l'image Docker à partir du Dockerfile dans le répertoire courant
+
+    restart: unless-stopped  # Redémarre le conteneur automatiquement sauf s'il est arrêté manuellement
+
     volumes:
+      # Monte le fichier matterbridge.toml local dans le conteneur
+      # Cela permet de modifier la configuration sans reconstruire l'image
+
       - ./matterbridge.toml:/etc/matterbridge/matterbridge.toml
-    command: -debug
+
+    command: -debug  # Ajoute l'option -debug à la commande de démarrage de Matterbridge
+
     env_file:
-      - .env
-    entrypoint: ["/bin/sh", "/start-matterbridge.sh"]
+
+      - .env  # Charge les variables d'environnement depuis le fichier .env
+
+    entrypoint: ["/bin/sh", "/start-matterbridge.sh"]  # Définit le point d'entrée du conteneur
+    # Cela exécute le script start-matterbridge.sh au démarrage du conteneur

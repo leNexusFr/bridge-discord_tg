@@ -1,0 +1,57 @@
+#  Ce fichier permet une intégration bidirectionnelle entre Telegram et Discord, facilitant la communication 
+#  entre les utilisateurs des deux plateformes. 
+#  Les tokens et identifiants spécifiques sont représentés par des variables d'environnement pour des raisons de sécurité.
+
+
+# Configuration pour Telegram
+[telegram]
+    # Configuration du bot Telegram pour le groupe "groupe_principal"
+    [telegram.groupe_principal]
+    Token="{TELEGRAM_BOT_1}"  # Token d'API pour le premier bot Telegram
+    
+    # Configuration du bot Telegram pour le groupe "internal"
+    [telegram.internal]
+    Token="{TELEGRAM_BOT_2}"  # Token d'API pour le deuxième bot Telegram
+
+# Configuration pour Discord
+[discord]
+    # Configuration du serveur Discord "serveur_principal"
+    [discord.serveur_principal]
+    InitialConnectDelay=10  # Délai initial de connexion en secondes
+    Token="{DISCORD_TOKEN}"  # Token d'authentification pour le bot Discord
+    Debug=true  # Activation du mode débogage
+    Server="{DISCORD_SERVER}"  # ID du serveur Discord
+    AutoWebhooks=true  # Création automatique des webhooks
+    PreserveThreading=true  # Préservation de la structure des fils de discussion
+    Intents=["GUILDS", "GUILD_MESSAGES", "MESSAGE_CONTENT"]  # Intentions requises pour le bot
+    UseUserName=true  # Utilisation des noms d'utilisateur Discord
+    UseDiscordAttachments=true  # Autorisation des pièces jointes Discord
+    ReconnectInterval=60  # Intervalle de reconnexion en secondes
+    RequestTimeout=30  # Délai d'attente pour les requêtes en secondes
+
+# Configuration générale
+[general]
+#    DebugLevel=10  # Niveau de débogage (actuellement commenté)
+    RemoteNickFormat="[{PROTOCOL}/{BRIDGE}] <{NICK}>\n\n"  # Format d'affichage des pseudos distants
+
+# Pont 1 : Groupe_Principal_TG vers Discord_general
+[[gateway]]
+name="{GATEWAY_NAME_1}"  # Nom du premier pont
+enable=true  # Activation du pont
+    [[gateway.inout]]
+    account="telegram.groupe_principal"  # Compte Telegram source
+    channel="{TELEGRAM_GROUPE1}"  # ID du groupe Telegram source
+    [[gateway.inout]]
+    account="discord.serveur_principal"  # Compte Discord destination
+    channel="ID:{DISCORD_CHANNEL1}"  # ID du canal Discord destination
+
+# Pont 2 : probablement pour un autre groupe
+[[gateway]]
+name="{GATEWAY_NAME_2}"  # Nom du deuxième pont
+enable=true  # Activation du pont
+    [[gateway.inout]]
+    account="telegram.internal"  # Compte Telegram source
+    channel="{TELEGRAM_GROUPE2}"  # ID du groupe Telegram source
+    [[gateway.inout]]
+    account="discord.serveur_principal"  # Compte Discord destination
+    channel="ID:{DISCORD_CHANNEL2}"  # ID du canal Discord destination

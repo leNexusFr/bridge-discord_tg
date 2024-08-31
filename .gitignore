@@ -1,5 +1,4 @@
 # Ignore Matterbridge configuration file
-matterbridge.toml
 *.save.*
 *.save
 # Ignore environment variables file
